@@ -1,0 +1,10 @@
+.my-nav a {
+    color: rgb(241, 6, 6);
+    text-decoration: none;
+    
+}
+
+.my-nav a:hover {
+    color: lightgray;
+
+}
