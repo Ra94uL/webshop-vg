@@ -1,10 +1,12 @@
 const element = document.getElementById("products");
+let products=[];
 
 if (element){
 
   fetch("https://dummyjson.com/products")
   .then(res => res.json())
   .then(data => {
+    products = data.products;
     for (let product of data.products) {
       let card = `
   <div class="col-12 col-sm-6 col-md-4 col-lg-3 col-xl-2 mb-4">
@@ -15,7 +17,9 @@ if (element){
     <h5 class="card-title">${product.title}</h5>
     <p class="card-text">${product.price} kr</p>
 
-    <a href="order.html?id=${product.id}" class="btn btn-primary mt-auto">Buy</a>
+    <button class="btn btn-primary mt-auto add-to-cart" data-id="${product.id}">
+    Add to cart
+    </button>
   </div>
 </div>
 `;
@@ -25,12 +29,42 @@ if (element){
   })
  .catch(error => {
     console.error("Error:", error);
-    orderElement.innerHTML = "<p>Could not load product</p>";
+    element.innerHTML = "<p>Could not load product</p>";
   });
 
 
 }
 
+document.addEventListener("click", function(e) {
+
+    if (e.target.classList.contains("add-to-cart")) {
+
+        let id = Number(e.target.dataset.id);
+
+        let cart =JSON.parse(localStorage.getItem("cart")) || [];
+
+        let product = products.find(p => p.id == id);
+        
+        let existingProduct = cart.find(item => item.id == product.id);
+
+        if (existingProduct){
+          existingProduct.quantity += 1;
+        }else{
+          cart.push({
+            id: product.id,
+            title: product.title,
+            price: product.price,
+            thumbnail: product.thumbnail,
+            quantity: 1
+          })
+        }
+
+        localStorage.setItem("cart", JSON.stringify(cart))
+        console.log(cart)
+
+    }
+
+});
 
 
   
