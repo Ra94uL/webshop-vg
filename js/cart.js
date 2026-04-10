@@ -95,4 +95,13 @@ document.addEventListener("click", function(e){
 
 });
 
+document.getElementById("confirm-order").addEventListener("click", function(){
+
+    
+    localStorage.removeItem("cart");
+
+    
+    window.location.href =  "top-navigation/thankyou.html";
+});
+
 
